@@ -1,6 +1,9 @@
 //Utility Store
+const backendAPI = process.env.BACKEND_API;
+const imageUpload = process.env.IMAGE_UPLOAD;
+
 export async function signup(id: string, password: string) {
-  const response = await fetch(`${process.env.BACKEND_API}/api/signup`, {
+  const response = await fetch(`${backendAPI}/api/signup`, {
     method: "POST",
     cache: "no-store",
     credentials: "include",
@@ -12,7 +15,7 @@ export async function signup(id: string, password: string) {
   return response;
 }
 export async function login(id: string, password: string) {
-  const response = await fetch(`${process.env.BACKEND_API}/api/signup`, {
+  const response = await fetch(`${backendAPI}/api/signup`, {
     method: "POST",
     cache: "no-store",
     credentials: "include",
@@ -25,7 +28,7 @@ export async function login(id: string, password: string) {
 }
 
 export function logout() {
-  fetch(`${process.env.BACKEND_API}/api/logout`, {
+  fetch(`${backendAPI}/api/logout`, {
     method: "POST",
     cache: "no-store",
     credentials: "include",
@@ -33,7 +36,7 @@ export function logout() {
 }
 
 export async function getAdmin() {
-  const response = await fetch(`${process.env.BACKEND_API}/api/admin`, {
+  const response = await fetch(`${backendAPI}/api/admin`, {
     cache: "no-store",
     credentials: "include",
   });
@@ -43,7 +46,7 @@ export async function getAdmin() {
 
 //Get user data from Spring Boot backend/MongoDB
 export async function getUserData(id: String) {
-  const json = await fetch(`${process.env.BACKEND_API}/api/user/${id}`, {
+  const json = await fetch(`${backendAPI}/api/user/${id}`, {
     cache: "no-store",
   });
   const data = await json.json();
@@ -57,16 +60,13 @@ export async function handleImageUpload(
 ): Promise<string | undefined> {
   let files: FileList | null = event.target.files;
   if (files && files.length) {
-    const response = await fetch(
-      `${process.env.IMAGE_UPLOAD}/${userId}/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "image/*",
-        },
-        body: files[0],
-      }
-    );
+    const response = await fetch(`${imageUpload}/${userId}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "image/*",
+      },
+      body: files[0],
+    });
     console.log(response);
     return `https://boba-level-images.s3.us-east-2.amazonaws.com/${userId}/${id}`;
   }
