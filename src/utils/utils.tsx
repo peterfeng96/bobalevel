@@ -1,7 +1,4 @@
 //Utility Store
-import dotenv from "dotenv";
-dotenv.config();
-
 export async function signup(id: string, password: string) {
   const response = await fetch(`${process.env.BACKEND_API}/api/signup`, {
     method: "POST",
