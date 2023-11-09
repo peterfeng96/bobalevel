@@ -1,25 +1,49 @@
 "use client";
-import { useState, useContext } from "react";
-import { UserContext } from "../context/UserContextProvider";
-import SvgIcon from "@mui/material/SvgIcon";
+//Module imports
+import { useState, useEffect, useContext, useRef } from "react";
+import { Container, Avatar, TextField, Box, Button } from "@mui/material";
 import { Email, Instagram, YouTube, Twitter } from "@mui/icons-material";
+import SvgIcon from "@mui/material/SvgIcon";
 import TikTok from "../components/TikTok";
-import {
-  Container,
-  Avatar,
-  TextField,
-  Box,
-  Button,
-  Typography,
-} from "@mui/material";
+//Import Context and Components
+import { UserContext } from "../context/UserContextProvider";
+import Preview from "../components/Preview";
+import { SettingsType } from "@/types";
+import { updateUserData, handleImageUpload } from "@/utils/utils";
 
 export default function Settings() {
-  const [displayName, setDisplayName] = useState("");
-  const user = useContext(UserContext);
+  const [settings, setSettings] = useState<SettingsType>({
+    profilePicture: "",
+    displayName: "",
+    description: "",
+    instagram: "",
+    tiktok: "",
+    youtube: "",
+    twitter: "",
+    email: "",
+  });
+  const inputRef = useRef<HTMLInputElement>(null);
+  const userData = useContext(UserContext);
+
+  useEffect(() => {
+    setSettings(userData.settings);
+  }, [userData]);
+
+  const inputClick = (): void => {
+    if (inputRef.current) inputRef.current.click();
+  };
+
+  const handleSettingsChange = (setting: string, text: string) => {
+    setSettings((prevSettings: any) => {
+      const copySettings = { ...prevSettings };
+      copySettings[setting] = text;
+      return copySettings;
+    });
+  };
 
   return (
     <main>
-      <Box display="flex" flexDirection="column" gap="4vh" maxWidth="60vw">
+      <Box id="settings" display="flex" flexDirection="column" gap="4vh">
         <Container
           sx={{
             display: "flex",
@@ -28,25 +52,57 @@ export default function Settings() {
             marginLeft: 0,
           }}
         >
-          <Avatar sx={{ width: 64, height: 64 }} />
+          <Avatar
+            sx={{ width: 64, height: 64 }}
+            src={settings.profilePicture}
+            onClick={inputClick}
+          >
+            <input
+              ref={inputRef}
+              hidden
+              type="file"
+              onChange={async (e) => {
+                const imageUrl: string | undefined = await handleImageUpload(
+                  e,
+                  userData.id
+                );
+                if (imageUrl) {
+                  handleSettingsChange("profilePicture", imageUrl);
+                }
+              }}
+              accept="image/*"
+            />
+          </Avatar>
           <TextField
-            id="standard-basic"
             label="Display Name"
-            placeholder={displayName}
             variant="standard"
             fullWidth
-            onChange={(e) => setDisplayName(e.target.value)}
+            value={settings.displayName}
+            onChange={(e) =>
+              handleSettingsChange("displayName", e.target.value)
+            }
           />
-          <Button variant="contained">Save Changes</Button>
+          <Button
+            variant="contained"
+            onClick={() =>
+              updateUserData(userData.id, settings, userData.posts)
+            }
+          >
+            Save Changes
+          </Button>
         </Container>
         <Container>
           <TextField
-            label="Tell your fans a little about yourself."
+            label="Tell your followers a little about yourself."
             placeholder="Make it fun!"
             variant="outlined"
             fullWidth
+            value={settings.description}
             multiline
             rows={3}
+            onChange={(e) =>
+              handleSettingsChange("description", e.target.value)
+            }
           ></TextField>
         </Container>
         <Container
@@ -62,6 +118,8 @@ export default function Settings() {
             label="Add Your Instagram"
             variant="standard"
             fullWidth
+            value={settings.instagram}
+            onChange={(e) => handleSettingsChange("instagram", e.target.value)}
           ></TextField>
         </Container>
         <Container
@@ -79,6 +137,8 @@ export default function Settings() {
             label="Add Your TikTok"
             variant="standard"
             fullWidth
+            value={settings.tiktok}
+            onChange={(e) => handleSettingsChange("tiktok", e.target.value)}
           ></TextField>
         </Container>
         <Container
@@ -94,6 +154,8 @@ export default function Settings() {
             label="Add Your YouTube"
             variant="standard"
             fullWidth
+            value={settings.youtube}
+            onChange={(e) => handleSettingsChange("youtube", e.target.value)}
           ></TextField>
         </Container>
         <Container
@@ -109,6 +171,8 @@ export default function Settings() {
             label="Add Your Twitter"
             variant="standard"
             fullWidth
+            value={settings.twitter}
+            onChange={(e) => handleSettingsChange("twitter", e.target.value)}
           ></TextField>
         </Container>
         <Container
@@ -124,8 +188,13 @@ export default function Settings() {
             label="Add Your E-mail Contact"
             variant="standard"
             fullWidth
+            value={settings.email}
+            onChange={(e) => handleSettingsChange("email", e.target.value)}
           ></TextField>
         </Container>
+      </Box>
+      <Box id="preview">
+        <Preview />
       </Box>
     </main>
   );

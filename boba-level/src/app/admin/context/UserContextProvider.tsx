@@ -1,16 +1,40 @@
 "use client";
-import { createContext, useEffect } from "react";
+//Module imports
+import { createContext, useState, useEffect } from "react";
+//Import Components
+import { DefaultContextType } from "@/types";
+import { getAdmin } from "@/utils/utils";
 
-export const UserContext = createContext("User Data");
+const defaultContext: DefaultContextType = {
+  id: "",
+  settings: {
+    profilePicture: "",
+    displayName: "",
+    description: "",
+    instagram: "",
+    tiktok: "",
+    youtube: "",
+    twitter: "",
+    email: "",
+  },
+  posts: [],
+};
+
+export const UserContext = createContext(defaultContext);
 
 export function UserContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  //FETCH USER DATA FROM API
-  //REPLACE VALUE WITH RETURN USER DATA
+  const [userData, setUserData] = useState(defaultContext);
+  useEffect(() => {
+    (async () => {
+      const data = await getAdmin();
+      setUserData(data);
+    })();
+  }, []);
   return (
-    <UserContext.Provider value="Peter Feng">{children}</UserContext.Provider>
+    <UserContext.Provider value={userData}>{children}</UserContext.Provider>
   );
 }

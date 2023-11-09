@@ -1,3 +1,5 @@
+//TikTok SVG component
+
 export default function TikTok() {
   return (
     <svg

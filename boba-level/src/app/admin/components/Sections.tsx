@@ -1,6 +1,7 @@
+//ALL THREE SECTIONS: TITLE, LINK, AND REVIEW
 "use client";
+//Module imports
 import { useRef } from "react";
-
 import {
   Box,
   Button,
@@ -8,37 +9,47 @@ import {
   Typography,
   TextField,
   Grid,
+  IconButton,
 } from "@mui/material";
 import {
   KeyboardDoubleArrowUp,
   KeyboardDoubleArrowDown,
+  Delete,
 } from "@mui/icons-material";
-
+//Import Context and Components
 import ImageUpload from "./ImageUpload";
+import { TitleDataType, LinkDataType, ReviewDataType } from "@/types";
 
+//PROPS
 type TitleSectionProps = {
-  id: number;
-  handleClick: (id: number, direction: string) => void;
-  changeData: (e: any, id: number, textField: string) => void;
-  data: any;
+  id: string;
+  handleClick: (id: string, direction: string) => void;
+  changeData: (e: any, id: string, textField: string) => void;
+  deletePost: (id: string) => void;
+  data: TitleDataType;
 };
 type LinkSectionProps = {
-  id: number;
-  handleClick: (id: number, direction: string) => void;
-  changeData: (e: any, id: number, textField: string) => void;
-  data: any;
+  id: string;
+  handleClick: (id: string, direction: string) => void;
+  changeData: (e: any, id: string, textField: string) => void;
+  deletePost: (id: string) => void;
+  uploadImage: (id: string, imageUrl: string) => void;
+  data: LinkDataType;
 };
 type ReviewSectionProps = {
-  id: number;
-  handleClick: (id: number, direction: string) => void;
-  changeData: (e: any, id: number, textField: string) => void;
-  data: any;
+  id: string;
+  handleClick: (id: string, direction: string) => void;
+  changeData: (e: any, id: string, textField: string) => void;
+  deletePost: (id: string) => void;
+  uploadImage: (id: string, imageUrl: string) => void;
+  data: ReviewDataType;
 };
 
 export function TitleSection({
   id,
   handleClick,
   changeData,
+  deletePost,
   data,
 }: TitleSectionProps) {
   const ref = useRef();
@@ -46,9 +57,10 @@ export function TitleSection({
     <Box
       ref={ref}
       sx={{
+        position: "relative",
         display: "flex",
         alignItems: "center",
-        height: 120,
+        minHeight: 120,
         border: 1,
         borderColor: "secondary.main",
         borderRadius: 2,
@@ -65,7 +77,12 @@ export function TitleSection({
         </Button>
       </ButtonGroup>
       <Box display="flex" flexDirection="column" gap="1vw" flexGrow={1}>
-        <Typography variant="h3">Title</Typography>
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h3">Title</Typography>
+          <IconButton aria-label="delete" onClick={() => deletePost(id)}>
+            <Delete color="primary" />
+          </IconButton>
+        </Box>
         <TextField
           variant="outlined"
           fullWidth
@@ -78,11 +95,12 @@ export function TitleSection({
     </Box>
   );
 }
-
 export function LinkSection({
   id,
   handleClick,
   changeData,
+  deletePost,
+  uploadImage,
   data,
 }: LinkSectionProps) {
   const ref = useRef();
@@ -93,7 +111,7 @@ export function LinkSection({
       sx={{
         display: "flex",
         alignItems: "center",
-        height: 230,
+        minHeight: 240,
         border: 1,
         borderColor: "secondary.main",
         borderRadius: 2,
@@ -109,35 +127,53 @@ export function LinkSection({
           <KeyboardDoubleArrowDown />
         </Button>
       </ButtonGroup>
-      <Box display="flex" gap="1vw" flexGrow={1} alignItems="flex-end">
+      <Box display="flex" flexDirection="column" gap="1vw" flexGrow={1}>
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h3">Link</Typography>
+          <IconButton aria-label="delete" onClick={() => deletePost(id)}>
+            <Delete color="primary" />
+          </IconButton>
+        </Box>
         <Box
           display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
+          gap="1vw"
+          flexGrow={1}
+          alignItems="flex-end"
+          height="100%"
         >
-          <Typography variant="h3">Link</Typography>
-          <ImageUpload />
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            height="100%"
+          >
+            <ImageUpload
+              id={id}
+              imageUrl={data.imageUrl}
+              uploadImage={uploadImage}
+            />
+          </Box>
+          <Grid container spacing={1} height={96}>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                fullWidth
+                size="small"
+                label="Link Text"
+                defaultValue={data.text}
+                onChange={(e) => changeData(e, id, "text")}
+              ></TextField>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                fullWidth
+                size="small"
+                label="Link Url"
+                defaultValue={data.url}
+                onChange={(e) => changeData(e, id, "url")}
+              ></TextField>
+            </Grid>
+          </Grid>
         </Box>
-        <Grid container spacing={1} height={96}>
-          <Grid item xs={12} sm={12}>
-            <TextField
-              fullWidth
-              size="small"
-              label="Link Text"
-              defaultValue={data.text}
-              onChange={(e) => changeData(e, id, "text")}
-            ></TextField>
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <TextField
-              fullWidth
-              size="small"
-              label="Link Url"
-              defaultValue={data.url}
-              onChange={(e) => changeData(e, id, "url")}
-            ></TextField>
-          </Grid>
-        </Grid>
       </Box>
     </Box>
   );
@@ -146,6 +182,8 @@ export function ReviewSection({
   id,
   handleClick,
   changeData,
+  deletePost,
+  uploadImage,
   data,
 }: ReviewSectionProps) {
   const ref = useRef();
@@ -155,7 +193,7 @@ export function ReviewSection({
       sx={{
         display: "flex",
         alignItems: "center",
-        height: 350,
+        minHeight: 400,
         border: 1,
         borderColor: "secondary.main",
         borderRadius: 2,
@@ -171,15 +209,25 @@ export function ReviewSection({
           <KeyboardDoubleArrowDown />
         </Button>
       </ButtonGroup>
+
       <Box display="flex" flexDirection="column" gap="1vh">
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h3">Review</Typography>
+          <IconButton aria-label="delete" onClick={() => deletePost(id)}>
+            <Delete color="primary" />
+          </IconButton>
+        </Box>
         <Box display="flex" gap="1vw">
           <Box
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
           >
-            <Typography variant="h3">Review</Typography>
-            <ImageUpload />
+            <ImageUpload
+              id={id}
+              imageUrl={data.imageUrl}
+              uploadImage={uploadImage}
+            />
           </Box>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={12}>

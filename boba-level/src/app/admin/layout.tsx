@@ -1,6 +1,6 @@
 "use client";
 import NavBar from "./components/NavBar";
-import Preview from "./components/Preview";
+//Import Context and Components
 import { UserContextProvider } from "./context/UserContextProvider";
 
 export default function AdminLayout({
@@ -12,7 +12,6 @@ export default function AdminLayout({
     <>
       <UserContextProvider>
         <NavBar />
-        <Preview />
         {children}
       </UserContextProvider>
     </>

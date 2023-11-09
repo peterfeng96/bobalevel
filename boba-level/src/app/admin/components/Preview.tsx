@@ -1,27 +1,84 @@
 "use client";
-import { useContext } from "react";
+//Module imports
+import { useContext, useState } from "react";
+import {
+  Alert,
+  Box,
+  Container,
+  IconButton,
+  Snackbar,
+  Typography,
+} from "@mui/material";
+import { ContentCopy } from "@mui/icons-material";
+import Fade from "@mui/material/Fade";
+import Image from "next/image";
+//Import Context and Components
 import { UserContext } from "../context/UserContextProvider";
-
-import { Box, Typography, Avatar, Container } from "@mui/material";
+import SettingsSection from "@/app/[id]/components/SettingsSection";
+import PostsSection from "@/app/[id]/components/PostsSection";
 
 export default function Preview() {
-  const user = useContext(UserContext);
+  const [alert, setAlert] = useState<boolean>(false);
+
+  const userData = useContext(UserContext);
+
+  const handleOpen = () => {
+    setAlert(true);
+  };
+
+  const handleClose = () => {
+    setAlert(false);
+  };
   return (
-    <Box position="absolute" minHeight="100vh" width="40vw" right={0}>
+    <Box>
       <Container
         maxWidth="sm"
-        sx={{
-          display: "flex",
-          gap: "2vw",
-          alignItems: "flex-end",
-        }}
+        style={{ display: "flex", flexDirection: "column", gap: 40 }}
       >
-        <Avatar
-          alt="Peter Feng"
-          src="/boba.png"
-          sx={{ width: 64, height: 64 }}
-        />
-        <Typography variant="h2">{user}</Typography>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Typography variant="h3" align="center">
+            https://boba-level.com/{userData.id}
+          </Typography>
+          <IconButton
+            aria-label="copy"
+            onClick={() => {
+              navigator.clipboard.writeText(
+                `https://boba-level.com/${userData.id}`
+              );
+              handleOpen();
+            }}
+          >
+            <ContentCopy color="primary" />
+          </IconButton>
+        </Box>
+        <SettingsSection settings={userData.settings} />
+        <PostsSection posts={userData.posts} />
+        <Box
+          sx={{
+            display: "flex",
+            flexGrow: 1,
+            justifyContent: "center",
+            alignItems: "flex-end",
+            gap: "1vw",
+            textDecoration: "none",
+          }}
+        >
+          <Image src="/boba.png" alt="Boba Icon" width={45} height={45}></Image>
+          <Typography variant="h2" color="textSecondary">
+            Boba-Level
+          </Typography>
+        </Box>
+        <Snackbar
+          open={alert}
+          autoHideDuration={1000}
+          onClose={handleClose}
+          TransitionComponent={Fade}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert onClose={handleClose} severity="info" sx={{ width: "100%" }}>
+            Copied to clipboard
+          </Alert>
+        </Snackbar>
       </Container>
     </Box>
   );

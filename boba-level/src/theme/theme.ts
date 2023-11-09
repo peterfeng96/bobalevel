@@ -1,12 +1,6 @@
 import { Montserrat, Roboto, Merriweather } from "next/font/google";
 import { createTheme } from "@mui/material/styles";
 
-// const roboto = Roboto({
-//   weight: ["300", "400", "500", "700", "900"],
-//   subsets: ["latin"],
-//   display: "swap",
-// });
-
 const montserrat = Montserrat({
   weight: ["300", "400", "500", "700", "900"],
   subsets: ["latin"],
@@ -33,7 +27,6 @@ const theme = createTheme({
   typography: {
     fontFamily: montserrat.style.fontFamily,
     h1: {
-      // fontFamily: montserrat.style.fontFamily,
       fontSize: "3rem",
       fontWeight: "700",
       // "@media (max-width:920px)": {
@@ -41,21 +34,19 @@ const theme = createTheme({
       // },
     },
     h2: {
-      // fontFamily: montserrat.style.fontFamily,
-      fontSize: "2rem",
+      fontSize: "1.75rem",
       fontWeight: "500",
-      // "@media (max-width:775px)": {
-      //   fontSize: "1rem",
-      // },
+      "@media (max-width:600px)": {
+        fontSize: "1.5rem",
+      },
     },
     h3: {
-      // fontFamily: montserrat.style.fontFamily,
       fontSize: "1.5rem",
       fontWeight: "500",
 
-      // "@media (max-width:920px)": {
-      //   fontSize: "1.5rem",
-      // },
+      "@media (max-width:600px)": {
+        fontSize: "1rem",
+      },
     },
     h4: {
       // fontFamily: montserrat.style.fontFamily,

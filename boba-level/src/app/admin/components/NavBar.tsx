@@ -1,19 +1,20 @@
 "use client";
+//Module imports
 import { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
-import { Link } from "@mui/material";
-
-const settings = ["Dashboard", "Settings", "Logout"];
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Menu,
+  Container,
+  Avatar,
+  Tooltip,
+  MenuItem,
+  Link,
+  Typography,
+} from "@mui/material";
 
 export default function NavBar() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -71,18 +72,33 @@ export default function NavBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem
-                  key={setting}
-                  component="a"
-                  href={`/admin/${setting.toLowerCase()}`}
-                  onClick={handleCloseUserMenu}
-                >
-                  <Typography color="textSecondary" textAlign="center">
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
+              <MenuItem
+                component="a"
+                href="/admin/"
+                onClick={handleCloseUserMenu}
+              >
+                <Typography color="textSecondary" textAlign="center">
+                  Dashboard
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                component="a"
+                href="/admin/settings"
+                onClick={handleCloseUserMenu}
+              >
+                <Typography color="textSecondary" textAlign="center">
+                  Settings
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                component="a"
+                href="/admin/logout"
+                onClick={handleCloseUserMenu}
+              >
+                <Typography color="textSecondary" textAlign="center">
+                  Logout
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
