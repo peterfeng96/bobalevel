@@ -13,7 +13,7 @@ export async function signup(id: string, password: string) {
   return response;
 }
 export async function login(id: string, password: string) {
-  const response = await fetch(`https://api.bobalevel.com//api/signup`, {
+  const response = await fetch(`https://api.bobalevel.com/api/login`, {
     method: "POST",
     cache: "no-store",
     credentials: "include",
@@ -44,7 +44,7 @@ export async function getAdmin() {
 
 //Get user data from Spring Boot backend/MongoDB
 export async function getUserData(id: String) {
-  const json = await fetch(`https://api.bobalevel.com//api/signup`, {
+  const json = await fetch(`https://api.bobalevel.com/api/${id}`, {
     cache: "no-store",
   });
   const data = await json.json();
@@ -74,7 +74,6 @@ export async function handleImageUpload(
 }
 //Update user data to Spring Boot backend/MongoDB
 export function updateUserData(id: String, settings: any, posts: any) {
-  console.log({ id, settings, posts });
   fetch(`https://api.bobalevel.com/api/${id}`, {
     method: "PUT",
     headers: {
