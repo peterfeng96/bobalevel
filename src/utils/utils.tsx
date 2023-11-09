@@ -1,9 +1,7 @@
 //Utility Store
-const backendAPI = process.env.BACKEND_API;
-const imageUpload = process.env.IMAGE_UPLOAD;
 
 export async function signup(id: string, password: string) {
-  const response = await fetch(`${backendAPI}/api/signup`, {
+  const response = await fetch(`https://3.144.5.67:8080/api/signup`, {
     method: "POST",
     cache: "no-store",
     credentials: "include",
@@ -15,7 +13,7 @@ export async function signup(id: string, password: string) {
   return response;
 }
 export async function login(id: string, password: string) {
-  const response = await fetch(`${backendAPI}/api/signup`, {
+  const response = await fetch(`https://3.144.5.67:8080/api/signup`, {
     method: "POST",
     cache: "no-store",
     credentials: "include",
@@ -28,7 +26,7 @@ export async function login(id: string, password: string) {
 }
 
 export function logout() {
-  fetch(`${backendAPI}/api/logout`, {
+  fetch(`https://3.144.5.67:8080/api/logout`, {
     method: "POST",
     cache: "no-store",
     credentials: "include",
@@ -36,7 +34,7 @@ export function logout() {
 }
 
 export async function getAdmin() {
-  const response = await fetch(`${backendAPI}/api/admin`, {
+  const response = await fetch(`https://3.144.5.67:8080/api/admin`, {
     cache: "no-store",
     credentials: "include",
   });
@@ -46,7 +44,7 @@ export async function getAdmin() {
 
 //Get user data from Spring Boot backend/MongoDB
 export async function getUserData(id: String) {
-  const json = await fetch(`${backendAPI}/api/user/${id}`, {
+  const json = await fetch(`https://3.144.5.67:8080/api/signup`, {
     cache: "no-store",
   });
   const data = await json.json();
@@ -60,13 +58,16 @@ export async function handleImageUpload(
 ): Promise<string | undefined> {
   let files: FileList | null = event.target.files;
   if (files && files.length) {
-    const response = await fetch(`${imageUpload}/${userId}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "image/*",
-      },
-      body: files[0],
-    });
+    const response = await fetch(
+      `https://pdgyiqazc2.execute-api.us-east-2.amazonaws.com/dev/boba-level-images/${userId}/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "image/*",
+        },
+        body: files[0],
+      }
+    );
     console.log(response);
     return `https://boba-level-images.s3.us-east-2.amazonaws.com/${userId}/${id}`;
   }
@@ -74,7 +75,7 @@ export async function handleImageUpload(
 //Update user data to Spring Boot backend/MongoDB
 export function updateUserData(id: String, settings: any, posts: any) {
   console.log({ id, settings, posts });
-  fetch(`${process.env.BACKEND_API}/api/user/${id}`, {
+  fetch(`https://3.144.5.67:8080/api/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
