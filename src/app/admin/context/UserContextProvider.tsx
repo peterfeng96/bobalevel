@@ -33,11 +33,15 @@ export function UserContextProvider({
 
   useEffect(() => {
     (async () => {
-      const res = await getAdmin();
-      if (res.status !== 200) router.push("/login");
-      else {
-        const data = await res.json();
-        setUserData(data);
+      try {
+        const res = await getAdmin();
+        if (res.status !== 200) router.push("/login");
+        else {
+          const data = await res.json();
+          setUserData(data);
+        }
+      } catch (e) {
+        router.push("/login");
       }
     })();
   }, []);

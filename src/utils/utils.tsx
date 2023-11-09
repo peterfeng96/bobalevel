@@ -1,7 +1,7 @@
 //Utility Store
 
 export async function signup(id: string, password: string) {
-  const response = await fetch("http://localhost:8080/api/signup", {
+  const response = await fetch(`${process.env.BACKEND_API}/api/signup`, {
     method: "POST",
     cache: "no-store",
     credentials: "include",
@@ -13,7 +13,7 @@ export async function signup(id: string, password: string) {
   return response;
 }
 export async function login(id: string, password: string) {
-  const response = await fetch("http://localhost:8080/api/login", {
+  const response = await fetch(`${process.env.BACKEND_API}/api/signup`, {
     method: "POST",
     cache: "no-store",
     credentials: "include",
@@ -26,7 +26,7 @@ export async function login(id: string, password: string) {
 }
 
 export function logout() {
-  fetch("http://localhost:8080/api/logout", {
+  fetch(`${process.env.BACKEND_API}/api/logout`, {
     method: "POST",
     cache: "no-store",
     credentials: "include",
@@ -34,16 +34,17 @@ export function logout() {
 }
 
 export async function getAdmin() {
-  const response = await fetch("http://localhost:8080/api/admin", {
+  const response = await fetch(`${process.env.BACKEND_API}/api/admin`, {
     cache: "no-store",
     credentials: "include",
   });
+  console.log(response);
   return response;
 }
 
 //Get user data from Spring Boot backend/MongoDB
 export async function getUserData(id: String) {
-  const json = await fetch(`http://localhost:8080/api/user/${id}`, {
+  const json = await fetch(`${process.env.BACKEND_API}/api/user/${id}`, {
     cache: "no-store",
   });
   const data = await json.json();
@@ -58,7 +59,7 @@ export async function handleImageUpload(
   let files: FileList | null = event.target.files;
   if (files && files.length) {
     const response = await fetch(
-      `https://pdgyiqazc2.execute-api.us-east-2.amazonaws.com/dev/boba-level-images/${userId}/${id}`,
+      `${process.env.IMAGE_UPLOAD}/${userId}/${id}`,
       {
         method: "PUT",
         headers: {
@@ -74,7 +75,7 @@ export async function handleImageUpload(
 //Update user data to Spring Boot backend/MongoDB
 export function updateUserData(id: String, settings: any, posts: any) {
   console.log({ id, settings, posts });
-  fetch(`http://localhost:8080/api/user/${id}`, {
+  fetch(`${process.env.BACKEND_API}/api/user/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
