@@ -1,30 +1,44 @@
 //Utility Store
 
-export async function login() {
-  const json = await fetch("http://localhost:8080/api/login", {
+export async function signup(id: string, password: string) {
+  const response = await fetch("http://localhost:8080/api/signup", {
     method: "POST",
     cache: "no-store",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id: "bobaluver", password: "bobaluver" }),
+    body: JSON.stringify({ id, password }),
   });
-  if (json.status !== 200) location.href = "http://localhost:3000/admin/login";
-
-  const data = await json.json();
-
-  return data;
+  return response;
+}
+export async function login(id: string, password: string) {
+  const response = await fetch("http://localhost:8080/api/login", {
+    method: "POST",
+    cache: "no-store",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id, password }),
+  });
+  return response;
 }
 
-export async function getAdmin() {
-  const json = await fetch("http://localhost:8080/api/admin", {
+export function logout() {
+  fetch("http://localhost:8080/api/logout", {
+    method: "POST",
     cache: "no-store",
     credentials: "include",
   });
-  if (json.status !== 200) window.location.href = "http://localhost:3000/login";
-  const data = await json.json();
-  return data;
+}
+
+export async function getAdmin() {
+  const response = await fetch("http://localhost:8080/api/admin", {
+    cache: "no-store",
+    credentials: "include",
+  });
+  return response;
 }
 
 //Get user data from Spring Boot backend/MongoDB

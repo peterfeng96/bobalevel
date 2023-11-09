@@ -1,6 +1,7 @@
 "use client";
 //Module imports
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   AppBar,
@@ -15,9 +16,11 @@ import {
   Link,
   Typography,
 } from "@mui/material";
+import { logout } from "@/utils/utils";
 
 export default function NavBar() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const router = useRouter();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -47,7 +50,7 @@ export default function NavBar() {
               height={45}
             ></Image>
             <Typography variant="h2" color="textSecondary">
-              Boba-Level
+              BobaLevel
             </Typography>
           </Link>
           <Box sx={{ flexGrow: 0 }}>
@@ -91,9 +94,10 @@ export default function NavBar() {
                 </Typography>
               </MenuItem>
               <MenuItem
-                component="a"
-                href="/admin/logout"
-                onClick={handleCloseUserMenu}
+                onClick={() => {
+                  logout();
+                  router.push("/login");
+                }}
               >
                 <Typography color="textSecondary" textAlign="center">
                   Logout
