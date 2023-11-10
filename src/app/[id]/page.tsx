@@ -1,17 +1,20 @@
 //PAGE FOR INDIVIDUAL USERS
 //Module imports
-import { Box, Container, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 //Import Context and Components
 import SettingsSection from "./components/SettingsSection";
 import PostsSection from "./components/PostsSection";
-import { UserDataType } from "@/types";
 import { getUserData } from "@/utils/utils";
 import { Link } from "@mui/material";
 import Image from "next/image";
 
 export default async function Page({ params }: { params: { id: string } }) {
   //Fetching user data from backend
-  const userData: UserDataType = await getUserData(params.id);
+  const userData: any = await getUserData(params.id);
+  const router = useRouter();
+  if (!userData) router.push("/login");
+
   return (
     <main style={{ margin: "5vh 0" }}>
       <Container

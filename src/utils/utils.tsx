@@ -43,12 +43,18 @@ export async function getAdmin(): Promise<Response> {
 }
 
 //Get user data from Spring Boot backend/MongoDB
-export async function getUserData(id: String): Promise<UserDataType> {
+export async function getUserData(id: String): Promise<any> {
   const json = await fetch(`https://api.bobalevel.com/api/user/${id}`, {
     cache: "no-store",
   });
-  const data = await json.json();
-  return data;
+  if (json.status == 200) {
+    const data = await json.json();
+    return data;
+  } else {
+    return new Promise((resolve, reject) => {
+      resolve(false);
+    });
+  }
 }
 //Upload Profile and Post Images to AWS S3 bucket
 export async function handleImageUpload(
