@@ -44,7 +44,7 @@ export async function getAdmin() {
 
 //Get user data from Spring Boot backend/MongoDB
 export async function getUserData(id: String) {
-  const json = await fetch(`https://api.bobalevel.com/api/${id}`, {
+  const json = await fetch(`https://api.bobalevel.com/api/user/${id}`, {
     cache: "no-store",
   });
   const data = await json.json();
