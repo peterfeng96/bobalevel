@@ -83,7 +83,7 @@ export function updateUserData(id: String, settings: any, posts: any) {
     body: JSON.stringify({ id, settings, posts }),
   });
 }
-//Add http to any link/url that doesn't have it
+//Add http to any link/url that doesn't have http or https
 export function normalizeUrl(url: string) {
   if (!url.startsWith("http://") || !url.startsWith("https://")) {
     url = "http://" + url;
