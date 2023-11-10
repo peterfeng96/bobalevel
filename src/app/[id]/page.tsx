@@ -11,7 +11,9 @@ import Image from "next/image";
 
 export default async function Page({ params }: { params: { id: string } }) {
   //Fetching user data from backend
+  console.log(params.id);
   const userData: UserDataType = await getUserData(params.id);
+  console.log(userData);
   return (
     <main style={{ margin: "5vh 0" }}>
       <Container
@@ -29,7 +31,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             gap: "1vw",
             textDecoration: "none",
           }}
-          href="http://localhost:3000"
+          href="https://bobalevel.com"
         >
           <Image src="/boba.png" alt="Boba Icon" width={45} height={45}></Image>
           <Typography variant="h2" color="textSecondary">

@@ -76,6 +76,7 @@ export async function handleImageUpload(
 export function updateUserData(id: String, settings: any, posts: any) {
   fetch(`https://api.bobalevel.com/api/${id}`, {
     method: "PUT",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
