@@ -74,7 +74,7 @@ export async function handleImageUpload(
 }
 //Update user data to Spring Boot backend/MongoDB
 export function updateUserData(id: String, settings: any, posts: any) {
-  fetch(`https://api.bobalevel.com/api/${id}`, {
+  fetch(`https://api.bobalevel.com/api/user/${id}`, {
     method: "PUT",
     credentials: "include",
     headers: {
