@@ -11,9 +11,7 @@ import Image from "next/image";
 
 export default async function Page({ params }: { params: { id: string } }) {
   //Fetching user data from backend
-  console.log(params.id);
   const userData: UserDataType = await getUserData(params.id);
-  console.log(userData);
   return (
     <main style={{ margin: "5vh 0" }}>
       <Container

@@ -1,4 +1,5 @@
 //Utility Store
+import { UserDataType } from "@/types";
 
 export async function signup(id: string, password: string) {
   const response = await fetch(`https://api.bobalevel.com/api/signup`, {
@@ -12,7 +13,7 @@ export async function signup(id: string, password: string) {
   });
   return response;
 }
-export async function login(id: string, password: string) {
+export async function login(id: string, password: string): Promise<Response> {
   const response = await fetch(`https://api.bobalevel.com/api/login`, {
     method: "POST",
     cache: "no-store",
@@ -25,7 +26,7 @@ export async function login(id: string, password: string) {
   return response;
 }
 
-export function logout() {
+export function logout(): void {
   fetch(`https://api.bobalevel.com/api/logout`, {
     method: "POST",
     cache: "no-store",
@@ -33,17 +34,16 @@ export function logout() {
   });
 }
 
-export async function getAdmin() {
+export async function getAdmin(): Promise<Response> {
   const response = await fetch(`https://api.bobalevel.com/api/admin`, {
     cache: "no-store",
     credentials: "include",
   });
-  console.log(response);
   return response;
 }
 
 //Get user data from Spring Boot backend/MongoDB
-export async function getUserData(id: String) {
+export async function getUserData(id: String): Promise<UserDataType> {
   const json = await fetch(`https://api.bobalevel.com/api/user/${id}`, {
     cache: "no-store",
   });
@@ -73,7 +73,7 @@ export async function handleImageUpload(
   }
 }
 //Update user data to Spring Boot backend/MongoDB
-export function updateUserData(id: String, settings: any, posts: any) {
+export function updateUserData(id: String, settings: any, posts: any): void {
   fetch(`https://api.bobalevel.com/api/user/${id}`, {
     method: "PUT",
     credentials: "include",
@@ -84,7 +84,7 @@ export function updateUserData(id: String, settings: any, posts: any) {
   });
 }
 //Add http to any link/url that doesn't have http or https
-export function normalizeUrl(url: string) {
+export function normalizeUrl(url: string): string {
   if (!url.startsWith("http://") || !url.startsWith("https://")) {
     url = "http://" + url;
   }
