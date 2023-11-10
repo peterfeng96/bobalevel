@@ -1,7 +1,7 @@
 //PAGE FOR INDIVIDUAL USERS
 //Module imports
 import { Container, Typography } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 //Import Context and Components
 import SettingsSection from "./components/SettingsSection";
 import PostsSection from "./components/PostsSection";
