@@ -273,7 +273,7 @@ export default function Admin() {
   return (
     <main>
       {userData ? (
-        <div>
+        <>
           <Box
             id="admin"
             display="flex"
@@ -323,7 +323,7 @@ export default function Admin() {
               Updated Page!
             </Alert>
           </Snackbar>{" "}
-        </div>
+        </>
       ) : null}
     </main>
   );
