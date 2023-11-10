@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Container, Button, Box, Snackbar, Fade, Alert } from "@mui/material";
 //Import Context and Components
-import { UserContext } from "./context/UserContextProvider";
+import { useUserContext } from "./context/UserContextProvider";
 import {
   TitleSection,
   LinkSection,
@@ -16,7 +16,9 @@ export default function Admin() {
   const [updateAlert, setUpdateAlert] = useState<boolean>(false);
   const [orderedView, setOrderedView] = useState<JSX.Element[]>([]);
   const [orderedViewData, setOrderedViewData] = useState<any[]>([]);
-  const userData = useContext(UserContext);
+  const userData = useUserContext();
+  console.log(userData);
+  console.log(userData);
 
   type Sections = {
     [key: string]: (e: any, fetchedData?: any) => void;
@@ -225,6 +227,7 @@ export default function Admin() {
     //   sections[userData.posts[i].section](null, userData.posts[i]);
     // }
     //
+    if (!userData) return;
     setOrderedView(
       userData.posts.map((post: any) => {
         if (post.section == "Title")
@@ -269,51 +272,59 @@ export default function Admin() {
 
   return (
     <main>
-      <Box
-        id="admin"
-        display="flex"
-        flexDirection="column"
-        gap="4vh"
-        margin="1vw"
-      >
-        <Container sx={{ display: "flex", justifyContent: "space-around" }}>
-          {Object.keys(sections).map((section) => (
-            <Button
-              key={section}
-              variant="contained"
-              onClick={sections[section]}
-            >
-              Add A {section}
-            </Button>
-          ))}
-          <Button
-            variant="contained"
-            onClick={() => {
-              updateUserData(userData.id, userData.settings, orderedViewData);
-              handleUpdateOpen();
-            }}
+      {userData ? (
+        <div>
+          <Box
+            id="admin"
+            display="flex"
+            flexDirection="column"
+            gap="4vh"
+            margin="1vw"
           >
-            Update
-          </Button>
-        </Container>
-        {orderedView}
-      </Box>
-      <Preview />
-      <Snackbar
-        open={updateAlert}
-        autoHideDuration={1000}
-        onClose={handleUpdateClose}
-        TransitionComponent={Fade}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleUpdateClose}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Updated Page!
-        </Alert>
-      </Snackbar>
+            <Container sx={{ display: "flex", justifyContent: "space-around" }}>
+              {Object.keys(sections).map((section) => (
+                <Button
+                  key={section}
+                  variant="contained"
+                  onClick={sections[section]}
+                >
+                  Add A {section}
+                </Button>
+              ))}
+              <Button
+                variant="contained"
+                onClick={() => {
+                  updateUserData(
+                    userData.id,
+                    userData.settings,
+                    orderedViewData
+                  );
+                  handleUpdateOpen();
+                }}
+              >
+                Update
+              </Button>
+            </Container>
+            {orderedView}
+          </Box>
+          <Preview />
+          <Snackbar
+            open={updateAlert}
+            autoHideDuration={1000}
+            onClose={handleUpdateClose}
+            TransitionComponent={Fade}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Alert
+              onClose={handleUpdateClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Updated Page!
+            </Alert>
+          </Snackbar>{" "}
+        </div>
+      ) : null}
     </main>
   );
 }

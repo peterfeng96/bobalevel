@@ -1,6 +1,6 @@
 "use client";
 //Module imports
-import { createContext, useState, useEffect, Context } from "react";
+import { createContext, useState, useEffect, Context, useContext } from "react";
 import { useRouter } from "next/navigation";
 //Import Components
 import { DefaultContextType, UserDataType } from "@/types";
@@ -21,15 +21,14 @@ const defaultContext: DefaultContextType = {
   posts: [],
 };
 
-export const UserContext: Context<DefaultContextType> =
-  createContext(defaultContext);
+export const UserContext: Context<any> = createContext(null);
 
 export function UserContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [userData, setUserData] = useState(defaultContext);
+  const [userData, setUserData] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -50,3 +49,7 @@ export function UserContextProvider({
     <UserContext.Provider value={userData}>{children}</UserContext.Provider>
   );
 }
+
+export const useUserContext = () => {
+  return useContext(UserContext);
+};
