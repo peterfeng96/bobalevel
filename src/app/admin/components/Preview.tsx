@@ -37,7 +37,7 @@ export default function Preview() {
         >
           <Box display="flex" justifyContent="center" alignItems="center">
             <Typography variant="h3" align="center">
-              https://boba-level.com/{userData.id}
+              https://bobalevel.com/{userData.id}
             </Typography>
             <IconButton
               aria-label="copy"
